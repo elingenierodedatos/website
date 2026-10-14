@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Tokens de marca. Fuente de verdad: repo brand (README). */
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-accent: var(--yellow);
+  --color-accent-light: var(--yellow-light);
+  --color-mist: var(--mist);
+  --color-white: var(--white);
+  --font-sans: var(--font-barlow), Arial, sans-serif;
+  --font-heading: var(--font-barlow-condensed), Arial, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "Courier New", monospace;
+}
+
+:root {
+  --navy: #0b1f3a;
+  --navy-soft: #17335c;
+  --yellow: #f5b800;
+  --yellow-light: #ffd84d;
+  --white: #ffffff;
+  --mist: #c9d3e0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--white);
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--navy);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+/* Trama de puntos sobre marino, igual que en el kit de marca. */
+.dot-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='%2317335C'/%3E%3C/svg%3E");
+}
+
+:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+}
+
+.on-navy :focus-visible {
+  outline-color: var(--yellow);
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--navy);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
