@@ -1,0 +1,16 @@
+// Configuración de Cloudflare Workers. El sitio es estático: solo sirve la carpeta out/.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "elingenierodedatos-web",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+  },
+  // Dominios del sitio. Requieren que la zona esté en la misma cuenta de Cloudflare.
+  "routes": [
+    { "pattern": "elingenierodedatos.com", "custom_domain": true },
+    { "pattern": "www.elingenierodedatos.com", "custom_domain": true },
+  ],
+}

@@ -1,0 +1,44 @@
+{
+  "name": "elingenierodedatos-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sitio de EL INGENIERO DE DATOS: elingenierodedatos.com",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/sincronizar-marca.mjs",
+    "build": "next build",
+    "preview": "wrangler dev",
+    "deploy": "pnpm build && wrangler deploy",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm lint && pnpm typecheck && pnpm format:check",
+    "sync:brand": "node scripts/sincronizar-marca.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^1.16.0",
+    "next": "16.4.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.0",
+    "eslint-config-prettier": "^10.1.0",
+    "postcss": "^8.5",
+    "prettier": "^3.6.0",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.0",
+    "wrangler": "^4"
+  }
+}

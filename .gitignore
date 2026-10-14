@@ -1,10 +1,18 @@
+# Dependencias y compilación
 node_modules/
 .next/
-.open-next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Cloudflare
 .wrangler/
-dist/
-.env
-.env.*
-!.env.example
 .dev.vars
+
+# Assets de marca: se descargan del repo brand en cada build (pnpm sync:brand)
+public/marca/
+
+# Entorno y sistema
+.env*
 .DS_Store
+Thumbs.db
