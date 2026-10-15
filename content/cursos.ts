@@ -18,6 +18,17 @@ export interface CursoResumen {
   destacado?: boolean;
 }
 
+/** Encabezado de la sección en la página de inicio. */
+export const SECCION_CURSOS = {
+  titulo: "Cursos",
+  texto:
+    "Tres fundamentos gratuitos, con el mismo método: datos sucios, pruebas que califican tu avance y un proyecto en tu GitHub. Lo que sigue (dbt, nube, plataformas) se construye sobre estos tres.",
+} as const;
+
+/**
+ * La entrada gratuita: Python, SQL y la terminal. En este orden se producen y se recomiendan.
+ * Los cursos intermedios (dbt, Databricks, nube) se listan cuando existan, en una franja aparte.
+ */
 export const CURSOS: CursoResumen[] = [
   {
     slug: "python-basico",
@@ -30,19 +41,19 @@ export const CURSOS: CursoResumen[] = [
     destacado: true,
   },
   {
-    slug: "dbt-duckdb",
-    titulo: "dbt con DuckDB: NeoBanco MX",
+    slug: "sql-basico",
+    titulo: "SQL básico para ingeniería de datos",
     descripcion:
-      "Modela un warehouse completo con SQL, dbt y datos financieros de un banco digital.",
-    nivel: "Intermedio",
+      "Consulta, limpia y modela datos con SQL desde cero. Sin instalar un servidor: DuckDB y datos reales, con pruebas y un proyecto.",
+    nivel: "Principiante",
     estado: "proximamente",
   },
   {
-    slug: "databricks",
-    titulo: "Databricks",
+    slug: "terminal-git-linux",
+    titulo: "Terminal, Git y Linux para datos",
     descripcion:
-      "Procesa datos a escala y aprende los fundamentos de una plataforma que usan los equipos modernos.",
-    nivel: "Intermedio",
+      "La caja de herramientas del ingeniero: la línea de comandos, versionar con Git, publicar en GitHub y moverte en un servidor Linux.",
+    nivel: "Principiante",
     estado: "proximamente",
   },
 ];

@@ -2,15 +2,18 @@ import { ArrowRight } from "lucide-react";
 import { Etiqueta } from "@/components/ui/etiqueta";
 import { Seccion } from "@/components/ui/seccion";
 import { Titulo } from "@/components/ui/titulo";
-import { CURSOS, ETIQUETA_ESTADO } from "@/content/cursos";
+import { CURSOS, ETIQUETA_ESTADO, SECCION_CURSOS } from "@/content/cursos";
 import { REDES } from "@/content/sitio";
 import { cx } from "@/lib/utilidades";
 
 export function Cursos() {
   return (
     <Seccion id="cursos" etiquetadoPor="cursos-titulo">
-      <div className="border-navy-soft border-b pb-8">
-        <Titulo id="cursos-titulo">Cursos</Titulo>
+      <div className="border-navy-soft flex flex-col gap-6 border-b pb-8 lg:flex-row lg:items-end lg:justify-between">
+        <Titulo id="cursos-titulo">{SECCION_CURSOS.titulo}</Titulo>
+        <p className="text-navy max-w-xl text-base leading-7 lg:text-right">
+          {SECCION_CURSOS.texto}
+        </p>
       </div>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {CURSOS.map((curso, indice) => {
