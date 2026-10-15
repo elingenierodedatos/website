@@ -1,35 +1,31 @@
 # Despliegue en Cloudflare
 
-## Primera vez (una sola vez, desde tu máquina)
+El sitio se publica solo: cada push a `main` corre `.github/workflows/deploy.yml`, que instala, compila, verifica y sube la carpeta `out/` al Worker `elingenierodedatos-web`. No hace falta `wrangler login` en ninguna máquina.
 
-1. El dominio `elingenierodedatos.com` ya está en Cloudflare. Confirma que en DNS no haya registros `A`, `AAAA` o `CNAME` para la raíz ni para `www`; si los hay, bórralos. Los dominios personalizados de Workers crean los suyos.
-2. Instala dependencias y entra a Cloudflare:
+## Configuración (una sola vez)
 
-   ```bash
-   pnpm install
-   pnpm exec wrangler login
-   ```
+1. **DNS.** El dominio `elingenierodedatos.com` ya está en Cloudflare. En DNS no debe haber registros `A`, `AAAA` ni `CNAME` para la raíz ni para `www`; los dominios personalizados de Workers crean los suyos al publicar.
+2. **Environment.** En GitHub → Settings → Environments crea `produccion`. Recomendado: en "Deployment branches" permite solo `main`.
+3. **Secretos**, dentro de ese environment (no en los secretos del repositorio; el workflow los lee del environment):
 
-3. Publica:
+   | Secreto                 | De dónde sale                                                                                     |
+   | ----------------------- | ------------------------------------------------------------------------------------------------- |
+   | `CLOUDFLARE_ACCOUNT_ID` | La cadena de 32 caracteres que sigue a `dash.cloudflare.com/` en la URL del panel                 |
+   | `CLOUDFLARE_API_TOKEN`  | Mi perfil → API Tokens → Create Token → plantilla "Edit Cloudflare Workers", con la zona incluida |
 
-   ```bash
-   pnpm deploy
-   ```
+4. Haz push a `main` (o Actions → Deploy → "Run workflow"). En dos o tres minutos el sitio responde con certificado.
+5. Revisa `https://elingenierodedatos.com/`, `/cursos/python-basico/`, `/sitemap.xml` y una ruta inexistente (debe mostrar la página 404 del sitio).
 
-   `wrangler` crea el Worker `elingenierodedatos-web`, sube la carpeta `out/` y conecta los dos dominios de `wrangler.jsonc`. En uno o dos minutos el sitio responde con certificado.
+Si el paso "Publicar en Cloudflare Workers" falla diciendo que falta `CLOUDFLARE_API_TOKEN`, el secreto está vacío o en el lugar equivocado; el resto del flujo no depende de Cloudflare.
 
-4. Revisa `https://elingenierodedatos.com/`, `/cursos/python-basico/`, `/sitemap.xml` y una ruta inexistente (debe mostrar la página 404 del sitio).
+## Publicar desde tu máquina (solo en emergencia)
 
-## Publicación automática
+```bash
+pnpm exec wrangler login
+pnpm deploy
+```
 
-Cada push a `main` corre `.github/workflows/deploy.yml`. Necesita dos secretos en GitHub → Settings → Secrets and variables → Actions:
-
-| Secreto                 | De dónde sale                                                               |
-| ----------------------- | --------------------------------------------------------------------------- |
-| `CLOUDFLARE_ACCOUNT_ID` | Panel de Cloudflare → Workers & Pages → Overview, columna derecha           |
-| `CLOUDFLARE_API_TOKEN`  | Mi perfil → API Tokens → Create Token → plantilla "Edit Cloudflare Workers" |
-
-Crea también el _environment_ `produccion` en Settings → Environments; el workflow lo usa para agrupar despliegues.
+Hace lo mismo que el workflow. Úsalo solo si GitHub Actions no está disponible.
 
 ## Después de la primera publicación
 
