@@ -2,17 +2,53 @@
 
 import Script from "next/script";
 import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef } from "react";
 import { ArrowRight, CircleAlert } from "lucide-react";
 import { PYTHON_BASICO, type ErrorDeRegistro } from "@/content/cursos/python-basico";
 
 const CLASE_CAMPO =
   "border-mist text-navy placeholder:text-navy-soft w-full border bg-white px-4 py-3.5 text-base";
 
+/** Render explícito: el script no vuelve a correr en navegaciones del cliente, así que pintamos nosotros. */
+const SCRIPT_TURNSTILE = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
+interface Turnstile {
+  render: (contenedor: HTMLElement, opciones: { sitekey: string; language: string }) => string;
+  remove: (id: string) => void;
+}
+
+declare global {
+  interface Window {
+    turnstile?: Turnstile;
+  }
+}
+
 function errorDeLaUrl(valor: string | null): ErrorDeRegistro | undefined {
   if (valor && Object.hasOwn(PYTHON_BASICO.registro.errores, valor)) {
     return valor as ErrorDeRegistro;
   }
   return undefined;
+}
+
+/** Pinta el widget de Turnstile en cada montaje del formulario y lo retira al desmontar. */
+function useTurnstile(sitekey: string) {
+  const contenedor = useRef<HTMLDivElement>(null);
+  const widget = useRef<string | null>(null);
+
+  const pintar = useCallback(() => {
+    if (!contenedor.current || !window.turnstile || widget.current !== null) return;
+    widget.current = window.turnstile.render(contenedor.current, { sitekey, language: "es" });
+  }, [sitekey]);
+
+  useEffect(() => {
+    pintar();
+    return () => {
+      if (widget.current !== null) window.turnstile?.remove(widget.current);
+      widget.current = null;
+    };
+  }, [pintar]);
+
+  return { contenedor, pintar };
 }
 
 /**
@@ -24,6 +60,7 @@ export function FormularioRegistro() {
   const { registro } = PYTHON_BASICO;
   const error = errorDeLaUrl(useSearchParams().get("registro"));
   const correoInvalido = error === "correo_invalido";
+  const { contenedor, pintar } = useTurnstile(registro.turnstileSiteKey);
 
   return (
     <form action="/api/registro" method="post" className="relative flex flex-col gap-6">
@@ -77,7 +114,7 @@ export function FormularioRegistro() {
               className="hover:text-accent-light underline underline-offset-4"
             >
               {registro.avisoEnlace.texto}
-              <span className="sr-only"> (se abre en una pestaña nueva)</span>
+              <span className="sr-only"> {registro.nuevaPestana}</span>
             </a>
           </label>
         </div>
@@ -95,18 +132,11 @@ export function FormularioRegistro() {
       </div>
       {/* Campo trampa para bots: fuera de la vista y del orden de tabulación. */}
       <div aria-hidden="true" className="absolute -left-[9999px] size-px overflow-hidden">
-        <label htmlFor="sitio_web">Sitio web</label>
+        <label htmlFor="sitio_web">{registro.trampa}</label>
         <input id="sitio_web" name="sitio_web" type="text" tabIndex={-1} autoComplete="off" />
       </div>
-      <div
-        className="cf-turnstile min-h-[65px]"
-        data-sitekey={registro.turnstileSiteKey}
-        data-language="es"
-      />
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        strategy="afterInteractive"
-      />
+      <div ref={contenedor} className="min-h-[65px]" data-turnstile />
+      <Script src={SCRIPT_TURNSTILE} strategy="afterInteractive" onReady={pintar} />
       <input type="hidden" name="origen" value={registro.origen} />
       <div className="flex flex-col gap-4">
         <button

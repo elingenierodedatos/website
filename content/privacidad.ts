@@ -10,6 +10,8 @@ import { CORREO_CONTACTO, SITIO } from "@/content/sitio";
 export const PRIVACIDAD = {
   version: "2026-10-16",
   actualizado: "16 de octubre de 2026",
+  etiquetaActualizado: "Última actualización",
+  etiquetaVersion: "Versión",
   metadatos: {
     titulo: "Aviso de privacidad",
     descripcion:
