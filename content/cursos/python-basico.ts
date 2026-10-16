@@ -214,6 +214,9 @@ export const PYTHON_BASICO = {
     marcador: "tu@correo.com",
     aceptaAviso: "Leí y acepto el",
     avisoEnlace: { texto: "aviso de privacidad", href: "/privacidad/" },
+    nuevaPestana: "(se abre en una pestaña nueva)",
+    /** Etiqueta del campo trampa para bots. Nadie la ve, pero un lector de pantalla la anuncia si llega a él. */
+    trampa: "Sitio web",
     aceptaNewsletter:
       "También quiero recibir el newsletter con tips de ingeniería de datos y avisos de nuevos cursos, incluidos los de pago",
     boton: "Registrarme",
