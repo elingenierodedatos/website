@@ -1,10 +1,10 @@
 "use client";
 
 import Script from "next/script";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef } from "react";
-import { ArrowRight, CircleAlert } from "lucide-react";
-import { PYTHON_BASICO, type ErrorDeRegistro } from "@/content/cursos/python-basico";
+import { Suspense, useCallback, useEffect, useRef } from "react";
+import { ArrowRight } from "lucide-react";
+import { AvisoDeError } from "@/components/sections/curso/aviso-de-error";
+import { PYTHON_BASICO } from "@/content/cursos/python-basico";
 
 const CLASE_CAMPO =
   "border-mist text-navy placeholder:text-navy-soft w-full border bg-white px-4 py-3.5 text-base";
@@ -21,13 +21,6 @@ declare global {
   interface Window {
     turnstile?: Turnstile;
   }
-}
-
-function errorDeLaUrl(valor: string | null): ErrorDeRegistro | undefined {
-  if (valor && Object.hasOwn(PYTHON_BASICO.registro.errores, valor)) {
-    return valor as ErrorDeRegistro;
-  }
-  return undefined;
 }
 
 /** Pinta el widget de Turnstile en cada montaje del formulario y lo retira al desmontar. */
@@ -54,26 +47,18 @@ function useTurnstile(sitekey: string) {
 /**
  * Formulario de registro. Hace POST al Worker (/api/registro), que redirige a
  * /gracias o de vuelta aquí con ?registro=<error>. Como el sitio es estático,
- * el error se lee en el navegador.
+ * el error se lee en el navegador (ver AvisoDeError). El formulario en sí
+ * queda en el HTML estático.
  */
 export function FormularioRegistro() {
   const { registro } = PYTHON_BASICO;
-  const error = errorDeLaUrl(useSearchParams().get("registro"));
-  const correoInvalido = error === "correo_invalido";
   const { contenedor, pintar } = useTurnstile(registro.turnstileSiteKey);
 
   return (
     <form action="/api/registro" method="post" className="relative flex flex-col gap-6">
-      {error && (
-        <div
-          id="registro-error"
-          role="alert"
-          className="border-accent bg-navy-soft flex items-start gap-3 border p-4 text-white"
-        >
-          <CircleAlert className="text-accent mt-0.5 size-5 shrink-0" aria-hidden="true" />
-          <p className="leading-6">{registro.errores[error]}</p>
-        </div>
-      )}
+      <Suspense fallback={null}>
+        <AvisoDeError idCorreo="correo" />
+      </Suspense>
       <div className="flex flex-col gap-2">
         <label htmlFor="nombre" className="font-medium text-white">
           {registro.nombre}
@@ -91,8 +76,6 @@ export function FormularioRegistro() {
           required
           autoComplete="email"
           placeholder={registro.marcador}
-          aria-invalid={correoInvalido || undefined}
-          aria-describedby={correoInvalido ? "registro-error" : undefined}
           className={CLASE_CAMPO}
         />
       </div>

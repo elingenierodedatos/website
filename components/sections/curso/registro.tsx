@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { FormularioRegistro } from "@/components/sections/curso/formulario-registro";
 import { Etiqueta } from "@/components/ui/etiqueta";
 import { Seccion } from "@/components/ui/seccion";
@@ -18,9 +17,7 @@ export function Registro() {
           </Titulo>
           <p className="text-mist mt-7 text-lg leading-7 text-pretty">{registro.texto}</p>
         </div>
-        <Suspense fallback={null}>
-          <FormularioRegistro />
-        </Suspense>
+        <FormularioRegistro />
       </div>
     </Seccion>
   );
