@@ -8,9 +8,8 @@ import { metadatosDePagina } from "@/lib/metadatos";
 
 export const metadata: Metadata = {
   ...metadatosDePagina({
-    titulo: "Revisa tu correo",
-    descripcion:
-      "Te enviamos un enlace para confirmar tu registro al curso Python básico para ingeniería de datos.",
+    titulo: PYTHON_BASICO.gracias.metadatos.titulo,
+    descripcion: PYTHON_BASICO.gracias.metadatos.descripcion,
     ruta: "/cursos/python-basico/gracias/",
   }),
   robots: { index: false, follow: false },

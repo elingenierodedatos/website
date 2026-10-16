@@ -235,6 +235,11 @@ export const PYTHON_BASICO = {
   },
 
   gracias: {
+    metadatos: {
+      titulo: "Revisa tu correo",
+      descripcion:
+        "Te enviamos un enlace para confirmar tu registro al curso Python básico para ingeniería de datos.",
+    },
     titulo: "Revisa tu correo",
     texto:
       "Te enviamos un enlace para confirmar tu registro. El enlace es válido durante 48 horas.",
