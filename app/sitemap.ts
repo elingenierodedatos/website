@@ -11,5 +11,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
     priority: 0.9,
   }));
-  return [{ url: `${SITIO.dominio}/`, changeFrequency: "weekly", priority: 1 }, ...cursos];
+  return [
+    { url: `${SITIO.dominio}/`, changeFrequency: "weekly", priority: 1 },
+    ...cursos,
+    { url: `${SITIO.dominio}/privacidad/`, changeFrequency: "yearly", priority: 0.2 },
+  ];
 }
