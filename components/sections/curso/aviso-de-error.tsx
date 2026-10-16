@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { CircleAlert } from "lucide-react";
 import { PYTHON_BASICO, type ErrorDeRegistro } from "@/content/cursos/python-basico";
 
@@ -20,6 +20,16 @@ function errorDeLaUrl(valor: string | null): ErrorDeRegistro | undefined {
 export function AvisoDeError({ idCorreo }: { idCorreo: string }) {
   const error = errorDeLaUrl(useSearchParams().get("registro"));
   const correoInvalido = error === "correo_invalido";
+  const aviso = useRef<HTMLDivElement>(null);
+
+  // El aviso se pinta después de hidratar, así que el salto al ancla #registro
+  // ya ocurrió y puede quedar fuera de vista. Lo llevamos a la vista y le damos
+  // el foco para que el lector de pantalla lo anuncie.
+  useEffect(() => {
+    if (!error || !aviso.current) return;
+    aviso.current.scrollIntoView({ block: "center" });
+    aviso.current.focus({ preventScroll: true });
+  }, [error]);
 
   // Marca el campo de correo como inválido mientras el aviso esté visible.
   useEffect(() => {
@@ -37,9 +47,11 @@ export function AvisoDeError({ idCorreo }: { idCorreo: string }) {
   if (!error) return null;
   return (
     <div
+      ref={aviso}
       id="registro-error"
       role="alert"
-      className="border-accent bg-navy-soft flex items-start gap-3 border p-4 text-white"
+      tabIndex={-1}
+      className="border-accent bg-navy-soft flex scroll-mt-24 items-start gap-3 border p-4 text-white outline-none"
     >
       <CircleAlert className="text-accent mt-0.5 size-5 shrink-0" aria-hidden="true" />
       <p className="leading-6">{PYTHON_BASICO.registro.errores[error]}</p>
