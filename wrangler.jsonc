@@ -8,6 +8,11 @@
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
   },
+  // Producción solo vive en el dominio propio. Las versiones de los PR sí tienen URL
+  // de vista previa en workers.dev (la usa .github/workflows/vista-previa.yml).
+  // Se declaran explícitas para que ningún deploy ni cambio de default las apague.
+  "workers_dev": false,
+  "preview_urls": true,
   // Dominios del sitio. Requieren que la zona esté en la misma cuenta de Cloudflare.
   "routes": [
     { "pattern": "elingenierodedatos.com", "custom_domain": true },
