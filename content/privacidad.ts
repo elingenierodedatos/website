@@ -36,7 +36,7 @@ export const PRIVACIDAD = {
       lista: [
         "Correo electrónico.",
         "Nombre, si decides darlo.",
-        "La página desde la que llegaste al formulario, si trae parámetros de campaña.",
+        "El curso o la página desde la que te registraste.",
       ],
       parrafosDespues: [
         "De forma automática, como evidencia de tu consentimiento, guardamos la fecha y hora en que confirmaste tu registro, una huella irreversible (hash) de la dirección IP desde la que confirmaste, la versión de este aviso que aceptaste y las finalidades que marcaste. No guardamos la dirección IP en claro.",
