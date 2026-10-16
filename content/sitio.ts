@@ -43,3 +43,4 @@ export const CORREO_CONTACTO = "hola@elingenierodedatos.com";
 
 /** Enlaces legales del pie. */
 export const ENLACES_LEGALES = [{ etiqueta: "Aviso de privacidad", href: "/privacidad/" }] as const;
+export const ETIQUETA_ENLACES_LEGALES = "Enlaces legales";

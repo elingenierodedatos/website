@@ -2,7 +2,13 @@ import { Marca } from "@/components/layout/marca";
 import { IconoRed } from "@/components/icons/redes";
 import { Contenedor } from "@/components/ui/contenedor";
 import Link from "next/link";
-import { ENLACES_LEGALES, REDES, REDES_EN_PIE, SITIO } from "@/content/sitio";
+import {
+  ENLACES_LEGALES,
+  ETIQUETA_ENLACES_LEGALES,
+  REDES,
+  REDES_EN_PIE,
+  SITIO,
+} from "@/content/sitio";
 
 /** Pie de página común: marca, lema, redes y aviso legal. */
 export function Pie() {
@@ -40,7 +46,7 @@ export function Pie() {
           <span>
             © {SITIO.anioFundacion} {SITIO.nombre}
           </span>
-          <ul className="flex gap-5" aria-label="Enlaces legales">
+          <ul className="flex gap-5" aria-label={ETIQUETA_ENLACES_LEGALES}>
             {ENLACES_LEGALES.map((enlace) => (
               <li key={enlace.href}>
                 <Link href={enlace.href} className="py-1 hover:text-white">

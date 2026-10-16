@@ -25,7 +25,7 @@ export default function PaginaGracias() {
         {gracias.titulo}
       </Titulo>
       <p className="text-navy mt-8 max-w-[56ch] text-lg leading-8">{gracias.texto}</p>
-      <Titulo nivel={3} className="mt-14">
+      <Titulo nivel={2} className="mt-14 text-3xl sm:text-3xl">
         {gracias.subtitulo}
       </Titulo>
       <ul className="text-navy mt-6 flex max-w-[56ch] list-disc flex-col gap-3 pl-6 text-lg leading-8">

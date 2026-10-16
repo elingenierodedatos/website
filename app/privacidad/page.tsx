@@ -40,12 +40,13 @@ export default function PaginaPrivacidad() {
           {PRIVACIDAD.titulo}
         </Titulo>
         <p className="text-navy-soft mt-6 text-sm">
-          Última actualización: {PRIVACIDAD.actualizado} · Versión {PRIVACIDAD.version}
+          {PRIVACIDAD.etiquetaActualizado}: {PRIVACIDAD.actualizado} · {PRIVACIDAD.etiquetaVersion}{" "}
+          {PRIVACIDAD.version}
         </p>
         <p className="mt-8 text-lg leading-8">{PRIVACIDAD.intro}</p>
         {PRIVACIDAD.secciones.map((seccion) => (
           <section key={seccion.id} aria-labelledby={seccion.id} className="mt-14">
-            <Titulo id={seccion.id} nivel={3}>
+            <Titulo id={seccion.id} nivel={2} className="text-3xl sm:text-3xl">
               {seccion.titulo}
             </Titulo>
             <Parrafos textos={"parrafos" in seccion ? seccion.parrafos : undefined} />
