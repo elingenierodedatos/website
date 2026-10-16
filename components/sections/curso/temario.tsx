@@ -3,7 +3,7 @@ import { Titulo } from "@/components/ui/titulo";
 import { PYTHON_BASICO } from "@/content/cursos/python-basico";
 
 export function Temario() {
-  const { temario, repo } = PYTHON_BASICO;
+  const { temario } = PYTHON_BASICO;
   return (
     <Seccion etiquetadoPor="temario-titulo">
       <Titulo id="temario-titulo">{temario.titulo}</Titulo>
@@ -35,16 +35,7 @@ export function Temario() {
                 className="border-navy-soft text-navy border-b text-sm leading-6 last:border-0"
               >
                 <td className="px-4 py-4 font-bold">{leccion.numero}</td>
-                <td className="px-4 py-4 font-bold">
-                  <a
-                    href={`${repo}/tree/main/${leccion.ruta}`}
-                    className="decoration-accent underline-offset-4 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {leccion.titulo}
-                  </a>
-                </td>
+                <td className="px-4 py-4 font-bold">{leccion.titulo}</td>
                 <td className="px-4 py-4">{leccion.aprendes}</td>
                 <td className="px-4 py-4 whitespace-nowrap">{leccion.tiempo}</td>
               </tr>

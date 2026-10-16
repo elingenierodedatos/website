@@ -6,6 +6,7 @@ import { HeroCurso } from "@/components/sections/curso/hero-curso";
 import { Metodo } from "@/components/sections/curso/metodo";
 import { Preguntas } from "@/components/sections/curso/preguntas";
 import { Proyecto } from "@/components/sections/curso/proyecto";
+import { Registro } from "@/components/sections/curso/registro";
 import { SinIa } from "@/components/sections/curso/sin-ia";
 import { Temario } from "@/components/sections/curso/temario";
 import { DatosEstructurados } from "@/components/ui/datos-estructurados";
@@ -34,6 +35,7 @@ export default function PaginaPythonBasico() {
       <Audiencia />
       <SinIa />
       <Autor />
+      <Registro />
       <Seccion id="preguntas" etiquetadoPor="preguntas-titulo" className="max-w-5xl">
         <Titulo id="preguntas-titulo">Preguntas frecuentes</Titulo>
         <div className="mt-10">

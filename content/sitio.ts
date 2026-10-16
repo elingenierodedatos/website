@@ -17,7 +17,6 @@ export const SITIO = {
 
 export const REDES = {
   youtube: { nombre: "YouTube", url: "https://www.youtube.com/@elingenierodedatos" },
-  github: { nombre: "GitHub", url: "https://github.com/elingenierodedatos" },
   linkedin: { nombre: "LinkedIn", url: "https://www.linkedin.com/company/elingenierodedatos" },
   discord: { nombre: "Discord", url: "https://discord.gg/tWtUXnAMuQ" },
   spotify: { nombre: "Spotify", url: "https://open.spotify.com/show/5qK2yRH4tUIdiMmW2QcTVC" },
@@ -29,7 +28,7 @@ export const REDES = {
 export type RedSocial = keyof typeof REDES;
 
 /** Redes que aparecen en el pie de página, en este orden. */
-export const REDES_EN_PIE: RedSocial[] = ["youtube", "github", "linkedin", "discord"];
+export const REDES_EN_PIE: RedSocial[] = ["youtube", "linkedin", "discord"];
 
 /** Navegación principal. Las secciones que aún no existen (blog) no se listan. */
 export const NAVEGACION = [
@@ -38,3 +37,10 @@ export const NAVEGACION = [
 ] as const;
 
 export const ACCION_PRINCIPAL = { etiqueta: "Ver cursos", href: "/#cursos" } as const;
+
+/** Correo público de contacto. Es el que aparece en el aviso de privacidad. */
+export const CORREO_CONTACTO = "hola@elingenierodedatos.com";
+
+/** Enlaces legales del pie. */
+export const ENLACES_LEGALES = [{ etiqueta: "Aviso de privacidad", href: "/privacidad/" }] as const;
+export const ETIQUETA_ENLACES_LEGALES = "Enlaces legales";

@@ -1,0 +1,67 @@
+# Publica una versión de vista previa del sitio por cada pull request, sin tocar producción.
+# Los secretos viven en el entorno "vista-previa" (mismos valores que "produccion").
+# Solo corre para PRs del propio repositorio: los PRs desde forks no reciben secretos.
+name: Vista previa
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: vista-previa-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  previsualizar:
+    name: Compilar y subir versión de prueba
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    environment:
+      name: vista-previa
+      url: ${{ steps.subir.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Subir versión sin activarla
+        id: subir
+        run: |
+          set +e
+          salida=$(pnpm exec wrangler versions upload --message "PR #${{ github.event.pull_request.number }}" --tag pr-${{ github.event.pull_request.number }} 2>&1)
+          codigo=$?
+          set -e
+          echo "$salida"
+          url=$(echo "$salida" | grep -oE 'https://[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev' | head -1 || true)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          exit $codigo
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Comentar la URL en el PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = "${{ steps.subir.outputs.url }}";
+            const marca = "<!-- vista-previa -->";
+            const body = url
+              ? `${marca}\nVista previa de este PR: ${url}\n\nSe actualiza con cada push. El formulario no envía desde aquí porque /api/registro vive en el dominio de producción.`
+              : `${marca}\nNo se pudo obtener la URL de vista previa. Revisa el log del job "Vista previa".`;
+            const { data: comentarios } = await github.rest.issues.listComments({
+              ...context.repo, issue_number: context.issue.number,
+            });
+            const previo = comentarios.find((c) => c.body.startsWith(marca));
+            if (previo) {
+              await github.rest.issues.updateComment({ ...context.repo, comment_id: previo.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+            }
