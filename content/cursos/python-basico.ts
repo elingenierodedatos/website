@@ -227,6 +227,7 @@ export const PYTHON_BASICO = {
     errores: {
       correo_invalido: "El correo no parece válido. Revísalo e inténtalo de nuevo.",
       falta_consentimiento: "Para registrarte necesitas aceptar el aviso de privacidad.",
+      nombre_invalido: "El nombre no puede llevar los caracteres < o > ni pasar de 80 letras.",
       verificacion_fallida:
         "No pudimos completar la verificación de seguridad. Inténtalo de nuevo.",
       envio_fallido:
