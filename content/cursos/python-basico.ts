@@ -6,14 +6,14 @@
  */
 import { REDES } from "@/content/sitio";
 
-const REPO = "https://github.com/elingenierodedatos/curso-python-basico";
+/** Ancla del formulario de registro en la landing. Todos los botones de acción llevan ahí. */
+const ANCLA_REGISTRO = "#registro";
 
 export const PYTHON_BASICO = {
   slug: "python-basico",
-  repo: REPO,
+  anclaRegistro: ANCLA_REGISTRO,
   /** Enlace a la lista de reproducción. Mientras no exista, apunta al canal. */
   videos: REDES.youtube.url,
-  sinIa: `${REPO}/blob/main/docs/por-que-sin-ia.md`,
 
   metadatos: {
     titulo: "Curso gratis de Python para ingeniería de datos · EID",
@@ -27,7 +27,7 @@ export const PYTHON_BASICO = {
     titulo: "Aprende Python desde cero limpiando datos reales",
     subtitulo:
       "Completas funciones, corres pruebas y terminas con un flujo de datos propio en tu GitHub. Sin instalar nada raro y sin pagar nada.",
-    accionPrincipal: "Empezar el curso",
+    accionPrincipal: "Quiero el curso",
     accionSecundaria: "Ver las lecciones en YouTube",
     confianza: "9 lecciones · 1 proyecto final · 470 pruebas que te dicen cómo vas",
     terminal: {
@@ -49,7 +49,7 @@ export const PYTHON_BASICO = {
       "Lees la guía. Cada lección explica con ejemplos que puedes correr y modificar.",
       "Escribes el código. Completas funciones con un propósito claro, paso a paso.",
       "Corres las pruebas. Te dicen qué esperaban y qué obtuvieron, en español.",
-      "Subes tu avance. GitHub vuelve a correr las pruebas y tu portafolio crece solo.",
+      "Subes tu avance. Las pruebas vuelven a correr en la nube y tu portafolio crece solo.",
     ],
     cierre: "No hay exámenes. El código pasa las pruebas o no las pasa.",
   },
@@ -153,7 +153,6 @@ export const PYTHON_BASICO = {
     titulo: "Sin IA mientras aprendes",
     texto:
       "Te pedimos algo que suena raro: no uses asistentes de IA para resolver los ejercicios. No es desconfianza de la herramienta. Con la IA cambió la manera de enseñar, no la manera de aprender: recordar cuesta, y ese esfuerzo es el aprendizaje. Al terminar, úsala. Un ingeniero que sabe programar le saca mucho más a la IA, porque puede juzgar lo que recibe.",
-    enlace: "Por qué lo pedimos",
   },
 
   autor: {
@@ -168,7 +167,12 @@ export const PYTHON_BASICO = {
     {
       pregunta: "¿De verdad es gratis?",
       respuesta:
-        "Sí. El repositorio es público y los videos están en YouTube. No hay versión de pago de este curso.",
+        "Sí. Te registras con tu correo y recibes el acceso al repositorio y el aviso de cada lección nueva. No hay versión de pago de este curso.",
+    },
+    {
+      pregunta: "¿Para qué piden mi correo?",
+      respuesta:
+        "Para darte acceso al repositorio del curso y avisarte cuando salga una lección. Nada más, salvo que marques la casilla del newsletter. Puedes darte de baja con un clic desde cualquier correo.",
     },
     { pregunta: "¿Necesito saber programar?", respuesta: "No. Empieza desde instalar Python." },
     {
@@ -200,13 +204,54 @@ export const PYTHON_BASICO = {
     },
   ],
 
+  registro: {
+    etiqueta: "Registro gratuito",
+    titulo: "Quiero el curso",
+    texto:
+      "Déjanos tu correo y te mandamos el acceso al repositorio, el aviso de cada lección nueva y tu certificado al terminar. Sin costo.",
+    nombre: "Nombre (opcional)",
+    correo: "Correo electrónico",
+    marcador: "tu@correo.com",
+    aceptaAviso: "Leí y acepto el",
+    avisoEnlace: { texto: "aviso de privacidad", href: "/privacidad/" },
+    aceptaNewsletter:
+      "También quiero recibir el newsletter con tips de ingeniería de datos y avisos de nuevos cursos, incluidos los de pago",
+    boton: "Registrarme",
+    nota: "Te mandamos un correo para confirmar. Sin confirmación no hay registro.",
+    origen: "python-basico",
+    /** Clave pública del widget de Turnstile. La secreta vive en el Worker. */
+    turnstileSiteKey: "0x4AAAAAAFYLMomDKHYVkzLU",
+    errores: {
+      correo_invalido: "El correo no parece válido. Revísalo e inténtalo de nuevo.",
+      falta_consentimiento: "Para registrarte necesitas aceptar el aviso de privacidad.",
+      verificacion_fallida:
+        "No pudimos completar la verificación de seguridad. Inténtalo de nuevo.",
+      envio_fallido:
+        "No pudimos enviarte el correo de confirmación. Inténtalo de nuevo en unos minutos.",
+    },
+  },
+
+  gracias: {
+    titulo: "Revisa tu correo",
+    texto:
+      "Te enviamos un enlace para confirmar tu registro. El enlace es válido durante 48 horas.",
+    subtitulo: "Si no te llega",
+    puntos: [
+      "Revisa la carpeta de spam o de correo no deseado.",
+      "Espera 10 minutos antes de pedir otro enlace desde el formulario.",
+    ],
+    volver: "Volver al curso",
+  },
+
   cierre: {
     titulo: "Ensúciate las manos con datos reales",
     texto: "Lo único que necesitas es una computadora y una hora al día.",
-    accion: "Empezar el curso",
+    accion: "Quiero el curso",
     nota: "Lección nueva cada semana en YouTube.",
   },
 } as const;
+
+export type ErrorDeRegistro = keyof typeof PYTHON_BASICO.registro.errores;
 
 export type LeccionTemario = (typeof PYTHON_BASICO.temario.lecciones)[number];
 export type PreguntaFrecuente = (typeof PYTHON_BASICO.preguntas)[number];
