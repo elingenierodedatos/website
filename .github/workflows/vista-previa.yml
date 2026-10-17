@@ -56,10 +56,11 @@ jobs:
             const body = url
               ? `${marca}\nVista previa de este PR: ${url}\n\nSe actualiza con cada push. El formulario no envía desde aquí porque /api/registro vive en el dominio de producción.`
               : `${marca}\nNo se pudo obtener la URL de vista previa. Revisa el log del job "Vista previa".`;
-            const { data: comentarios } = await github.rest.issues.listComments({
-              ...context.repo, issue_number: context.issue.number,
+            // Pagina: la API devuelve 30 comentarios por defecto.
+            const comentarios = await github.paginate(github.rest.issues.listComments, {
+              ...context.repo, issue_number: context.issue.number, per_page: 100,
             });
-            const previo = comentarios.find((c) => c.body.startsWith(marca));
+            const previo = comentarios.find((c) => c.body?.startsWith(marca));
             if (previo) {
               await github.rest.issues.updateComment({ ...context.repo, comment_id: previo.id, body });
             } else {
