@@ -46,7 +46,11 @@ export default function PaginaPrivacidad() {
         <p className="mt-8 text-lg leading-8">{PRIVACIDAD.intro}</p>
         {PRIVACIDAD.secciones.map((seccion) => (
           <section key={seccion.id} aria-labelledby={seccion.id} className="mt-14">
-            <Titulo id={seccion.id} nivel={2} className="text-3xl sm:text-3xl">
+            <Titulo
+              id={seccion.id}
+              nivel={2}
+              tamano="text-[clamp(1.5rem,7.5vw,1.875rem)] leading-none"
+            >
               {seccion.titulo}
             </Titulo>
             <Parrafos textos={"parrafos" in seccion ? seccion.parrafos : undefined} />

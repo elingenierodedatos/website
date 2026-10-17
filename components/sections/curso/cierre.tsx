@@ -7,7 +7,10 @@ export function Cierre() {
   const { cierre, anclaRegistro } = PYTHON_BASICO;
   return (
     <Seccion tono="acento" etiquetadoPor="cierre-titulo" className="lg:py-24">
-      <Titulo id="cierre-titulo" className="text-6xl sm:text-8xl">
+      <Titulo
+        id="cierre-titulo"
+        tamano="text-[clamp(2.5rem,13vw,3.75rem)] sm:text-8xl leading-none"
+      >
         {cierre.titulo}
       </Titulo>
       <p className="mt-7 text-xl">{cierre.texto}</p>
