@@ -9,7 +9,7 @@ export function Audiencia() {
       <div className="grid gap-12 lg:grid-cols-2">
         {[paraTi, noParaTi].map((bloque) => (
           <div key={bloque.titulo}>
-            <Titulo className="text-5xl sm:text-5xl">{bloque.titulo}</Titulo>
+            <Titulo tamano="text-5xl leading-none">{bloque.titulo}</Titulo>
             <ul className="text-mist mt-8 list-disc space-y-5 pl-6 text-lg leading-7">
               {bloque.puntos.map((punto) => (
                 <li key={punto}>{punto}</li>

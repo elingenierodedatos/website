@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <Seccion tono="marino" trama etiquetadoPor="hero-titulo" className="border-navy-soft border-t">
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div className="max-w-3xl">
+        <div className="max-w-3xl min-w-0">
           <Titulo id="hero-titulo" nivel={1}>
             {hero.titulo} <span className="text-accent">{hero.tituloDestacado}</span>
           </Titulo>

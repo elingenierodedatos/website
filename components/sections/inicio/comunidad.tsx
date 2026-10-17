@@ -15,7 +15,11 @@ export function Comunidad() {
       <div className="border-navy-soft grid gap-10 border p-7 md:grid-cols-[1fr_0.8fr] md:items-end md:p-12">
         <div>
           <Etiqueta className="text-navy">{comunidad.etiqueta}</Etiqueta>
-          <Titulo id="comunidad-titulo" className="mt-3 max-w-xl text-4xl sm:text-5xl">
+          <Titulo
+            id="comunidad-titulo"
+            tamano="text-4xl sm:text-5xl leading-none"
+            className="mt-3 max-w-xl"
+          >
             {comunidad.titulo}
           </Titulo>
           <p className="text-navy mt-6 max-w-xl text-lg leading-7">{comunidad.texto}</p>
