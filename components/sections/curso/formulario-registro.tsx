@@ -12,6 +12,13 @@ const CLASE_CAMPO =
 /** Render explícito: el script no vuelve a correr en navegaciones del cliente, así que pintamos nosotros. */
 const SCRIPT_TURNSTILE = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
+/** Parámetros de campaña que se guardan con el registro para medir de dónde llega cada persona. */
+const CLAVES_UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content"] as const;
+const LLAVE_SESION = "eid-utm";
+/** Límite y patrón del campo origen en el Worker (eid-plataforma, src/validacion.ts). */
+const MAXIMO_ORIGEN = 120;
+const PATRON_UTM = /^[\w\-.=&]*$/;
+
 interface Turnstile {
   render: (contenedor: HTMLElement, opciones: { sitekey: string; language: string }) => string;
   remove: (id: string) => void;
@@ -44,6 +51,39 @@ function useTurnstile(sitekey: string) {
   return { contenedor, pintar };
 }
 
+/** Arma "utm_source=meta&utm_campaign=..." con los UTM de la URL, limpios. Vacío si no hay. */
+function utmDeLaUrl(busqueda: string) {
+  const parametros = new URLSearchParams(busqueda);
+  return CLAVES_UTM.flatMap((clave) => {
+    const valor = (parametros.get(clave) ?? "").replace(/[^\w\-.]/g, "").slice(0, 40);
+    return valor ? [`${clave}=${valor}`] : [];
+  }).join("&");
+}
+
+/**
+ * Agrega los UTM de la visita al campo oculto origen. Los guarda en la sesión
+ * para no perderlos si la persona navega por el sitio antes de registrarse.
+ * Se escribe directo en el campo porque el HTML del formulario es estático.
+ */
+function useOrigenConUtm(base: string) {
+  const campo = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let utm = utmDeLaUrl(window.location.search);
+    try {
+      if (utm) sessionStorage.setItem(LLAVE_SESION, utm);
+      else utm = sessionStorage.getItem(LLAVE_SESION) ?? "";
+    } catch {
+      // Sin almacenamiento (modo privado o bloqueado): basta con la URL.
+    }
+    if (utm && PATRON_UTM.test(utm) && campo.current) {
+      campo.current.value = `${base}?${utm}`.slice(0, MAXIMO_ORIGEN);
+    }
+  }, [base]);
+
+  return campo;
+}
+
 /**
  * Formulario de registro. Hace POST al Worker (/api/registro), que redirige a
  * /gracias o de vuelta aquí con ?registro=<error>. Como el sitio es estático,
@@ -53,6 +93,7 @@ function useTurnstile(sitekey: string) {
 export function FormularioRegistro() {
   const { registro } = PYTHON_BASICO;
   const { contenedor, pintar } = useTurnstile(registro.turnstileSiteKey);
+  const campoOrigen = useOrigenConUtm(registro.origen);
 
   return (
     <form action="/api/registro" method="post" className="relative flex flex-col gap-6">
@@ -120,7 +161,7 @@ export function FormularioRegistro() {
       </div>
       <div ref={contenedor} className="min-h-[65px]" data-turnstile />
       <Script src={SCRIPT_TURNSTILE} strategy="afterInteractive" onReady={pintar} />
-      <input type="hidden" name="origen" value={registro.origen} />
+      <input ref={campoOrigen} type="hidden" name="origen" defaultValue={registro.origen} />
       <div className="flex flex-col gap-4">
         <button
           type="submit"
